@@ -1,0 +1,16 @@
+{
+  "name": "dt_api",
+  "version": "1.0.0",
+  "description": "Api para cadastro de candidatos e vagas e verificação de pontuação dos candidatos para estas vagas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adriano S. Campanhola",
+  "license": "ISC",
+  "dependencies": {
+    "consign": "^0.1.6",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.1"
+  }
+}
