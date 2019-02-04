@@ -27,7 +27,7 @@ exports.create = function(req,res,next){
 
 exports.read = function(req,res,next){
     if (!req.params.id){
-        return res.status(422).json({error: 'fornecer um id de vaga'});
+        return res.status(422).json({error: 'fornecer um id de pessoa'});
     }
     
     //Ler no BD

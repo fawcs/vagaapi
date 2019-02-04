@@ -1,6 +1,11 @@
-const VagasDAO = require('../model/VagasDAO');
+const vagasMod = require('../model/vagas');
 
-exports.create = function(req,res,next){
+exports.validacao = (req,res) => {
+    vagasMod.validaVaga();
+    validaResultados(req,res)
+}
+
+exports.create = (req,res,next) => {
     //Criar no BD
     let vagaId = 1;
     res.json({
@@ -10,7 +15,7 @@ exports.create = function(req,res,next){
     })
 };
 
-exports.read = function(req,res,next){
+exports.read = (req,res,next) => {
     if (!req.params.id){
         return res.status(422).json({error: 'fornecer um id de vaga'});
     }
