@@ -1,8 +1,9 @@
-const vagasMod = require('../model/vagas');
 
-exports.validacao = (req,res) => {
-    vagasMod.validaVaga();
-    validaResultados(req,res)
+const vagasMod = require('../model/vagas');
+exports.validacao = () => {
+    let validacoes = vagasMod.validaVaga();
+    validacoes.push(vagasMod.validaResultados);
+    return validacoes;
 }
 
 exports.create = (req,res,next) => {

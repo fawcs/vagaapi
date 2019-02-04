@@ -1,20 +1,11 @@
-const { check , validationResult } = require('express-validator/check');
+const pessoasMod = require('../model/pessoas');
 
-exports.validaPessoa = () => {
-   return [
-      check(['nome','profissao','localizacao','nivel'],'Preenchimento obrigatório').exists(),
-      check('localizacao','localizacao deve ser uma letra entre A e F').isIn(['A','B','C','D','E','F']),
-      check('nivel','nivel deve ser um número de 1 a 5').isIn([1,2,3,4,5]),
-   ]
-};
+exports.validacao = () => {
+    let validacoes = pessoasMod.validaPessoa();
+    validacoes.push(pessoasMod.validaResultados);
+    return validacoes;
+}
 
-exports.validaResultados = (req,res) => {
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    };
-
-};
 exports.create = function(req,res,next){
     //Criar no BD
     let pessoaId = 1;
