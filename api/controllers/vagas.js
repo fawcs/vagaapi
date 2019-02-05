@@ -1,5 +1,5 @@
-
 const vagasMod = require('../model/vagas');
+
 exports.validacao = () => {
     let validacoes = vagasMod.validaVaga();
     validacoes.push(vagasMod.validaResultados);
@@ -7,28 +7,9 @@ exports.validacao = () => {
 }
 
 exports.create = (req,res,next) => {
-    //Criar no BD
-    let vagaId = 1;
-    res.json({
-        "id": vagaId,
-        "status": "Criado com sucesso",
-        "hora_criacao" : Date.now()
-    })
+    vagasMod.create(req,res,next);
 };
 
 exports.read = (req,res,next) => {
-    if (!req.params.id){
-        return res.status(422).json({error: 'fornecer um id de vaga'});
-    }
-
-    //Ler no BD
-
-    res.json({
-        "id": req.params.id,
-        "empresa": "Teste",
-        "titulo": "Vaga teste",
-        "descricao": "Criar os mais diferentes tipos de teste",
-        "localizacao": "A",
-        "nivel": 3
-    })
+    vagasMod.read(req,res,next);
 }

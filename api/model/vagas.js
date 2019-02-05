@@ -1,12 +1,13 @@
 const { check , validationResult } = require('express-validator/check');
 
+
 exports.validaVaga = () => {
-   return [
-      check(['empresa','titulo','nivel','localizacao'],'Preenchimento obrigatório').exists(),
-      check('descricao').optional(),
-      check('localizacao','localizacao deve ser uma letra entre A e F').isIn(['A','B','C','D','E','F']),
-      check('nivel','nivel deve ser um número de 1 a 5').isIn([1,2,3,4,5]),
-   ]
+    return [
+        check(['empresa','titulo','nivel','localizacao'],'Preenchimento obrigatório').exists(),
+        check('descricao').optional(),
+        check('localizacao','localizacao deve ser uma letra entre A e F').isIn(['A','B','C','D','E','F']),
+        check('nivel','nivel deve ser um número de 1 a 5').isIn([1,2,3,4,5]),
+    ]
 };
 
 exports.validaResultados = (req,res) => {
@@ -17,28 +18,47 @@ exports.validaResultados = (req,res) => {
 };
 
 exports.create = (req,res,next) => {
-    //Criar no BD
-    let vagaId = 1;
-    res.json({
-        "id": vagaId,
-        "status": "Criado com sucesso",
-        "hora_criacao" : Date.now()
-    })
+    
+    let dadosVaga = req.body;
+    let vagasDAO = new req.app.dao.VagasDAO(app);
+    try {
+        
+        vagasDAO.create(dadosVaga, (err, result) => {
+            try {
+                if (err) throw exception;
+                res.format({
+                    json: () => {
+                        res.status(201).json(result);
+                    }
+                })
+            }
+            catch (exception) {
+                res.status(500).json(err);
+            }
+        });
+    } catch(error) {
+        res.status(400).json(error);
+        return;
+    }
 };
 
 exports.read = (req,res,next) => {
     if (!req.params.id){
         return res.status(422).json({error: 'fornecer um id de vaga'});
     }
-
-    //Ler no BD
-
-    res.json({
-        "id": req.params.id,
-        "empresa": "Teste",
-        "titulo": "Vaga teste",
-        "descricao": "Criar os mais diferentes tipos de teste",
-        "localizacao": "A",
-        "nivel": 3
+    let vagasDAO = new app.dao.VagasDAO(app);
+    vagasDAO.read(req.params.id,(err,result) =>{
+        try {
+            if (err) throw exception;
+            res.format({
+                json: () => {
+                    res.status(201).json(result);
+                }
+            })
+        }
+        catch (exception) {
+            res.status(500).json(err);
+        }
+        
     })
 }

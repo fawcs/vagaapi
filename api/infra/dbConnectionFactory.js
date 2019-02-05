@@ -1,6 +1,6 @@
-const mysql = require('mysql');
+const mySql = require('mysql');
 const config = require('../../config/environment');
-const pool;
+let pool = null;
 
 function _createPool() {
     pool = mySql.createPool({
@@ -18,15 +18,19 @@ function _createPool() {
 }
 
 _createPool();
-
-module.exports = callback => {
+function dbConnection(callback) {
     pool.getConnection( (err, connection) => {
         if(err){
             pool.end(error => {
+                console.log(error)
                 _createPool();
             });
             return;
         }
         return callback(null,connection);
     })
+    
+}
+module.exports = function() {
+    return dbConnection;
 }
